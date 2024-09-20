@@ -70,9 +70,9 @@
     <div class="flex-1" fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
       <!-- Switch between card and list view based on the viewType variable, set above in the mar-radio-group -->
       <div>
-        @switch (filterStatus) {
+        @switch (viewType) {
         <!-- Card grid view -->
-        @case ("Complete") {
+        @case ('card') {
         <div class="user-cards-container flex-row gap-10 flex-wrap">
           @for (todo of filteredTodos; track todo._id) {
           <app-todo-card [simple]="true" class="todo-card" [todo]="todo" fxFlex="1 1 280px"></app-todo-card>
@@ -80,7 +80,7 @@
         </div>
         }
         <!-- List view -->
-        @case ('Incomplete') {
+        @case ('list') {
         <mat-card appearance="outlined">
           <mat-card-content>
             <mat-nav-list class="user-nav-list">

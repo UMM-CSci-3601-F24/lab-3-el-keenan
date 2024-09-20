@@ -62,6 +62,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   public todoBody: string;
   public todoCategory: string;
   public filterStatus: 'Complete' | 'Incomplete' = 'Complete';
+  public viewType: 'card' | 'list' = 'card';
 
   errMsg = '';
   private ngUnsubscribe = new Subject<void>();
@@ -96,9 +97,9 @@ export class TodoListComponent implements OnInit, OnDestroy {
   }
 
   public updateFilter() {
-    // this.filteredTodos = this.todoService.filterTodos(this.serverFilteredTodos, {
-    //   body: this.todoBody,
-    // });
+    this.filteredTodos = this.todoService.filterTodos(this.serverFilteredTodos, {
+      category: this.todoCategory,
+    });
   }
 
   ngOnInit(): void {
