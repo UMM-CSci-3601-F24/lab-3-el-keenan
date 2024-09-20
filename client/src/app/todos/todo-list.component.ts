@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Todo} from './todo';
+import { Todo } from './todo';
 import { Subject, takeUntil } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import {
@@ -52,7 +52,7 @@ import { TodoService } from './todo.service';
     MatError,
   ],
 })
-export class TodoListComponent implements OnInit, OnDestroy{
+export class TodoListComponent implements OnInit, OnDestroy {
   public serverFilteredTodos: Todo[];
   public filteredTodos: Todo[];
 
@@ -61,20 +61,17 @@ export class TodoListComponent implements OnInit, OnDestroy{
   public todoStatus: boolean;
   public todoBody: string;
   public todoCategory: string;
-  // public viewType: 'card' | 'list' = 'card';
+  public filterStatus: 'Complete' | 'Incomplete' = 'Complete';
 
   errMsg = '';
   private ngUnsubscribe = new Subject<void>();
 
+  private todoService = inject(TodoService);
+  private snackBar = inject(MatSnackBar);
 
-// @param todoService
-// @param snackBar
-  constructor(
-    private todoService: TodoService,
-    private snackBar: MatSnackBar
-  ) {
-
-  }
+  // @param todoService
+  // @param snackBar
+  // constructor(private todoService: TodoService, private snackBar: MatSnackBar) {}
 
   getTodosFromServer() {
     this.todoService
@@ -112,5 +109,4 @@ export class TodoListComponent implements OnInit, OnDestroy{
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
-
 }
