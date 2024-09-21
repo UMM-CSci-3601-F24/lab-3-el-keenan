@@ -8,9 +8,9 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class TodoService {
-  constructor(private httpClient: HttpClient) {}
-
   readonly todoUrl: string = environment.apiUrl + 'todos';
+
+  constructor(private httpClient: HttpClient) {}
 
   getTodos(filters?: { status?: boolean; category?: string; owner?: string }): Observable<Todo[]> {
     let httpParams: HttpParams = new HttpParams();
@@ -29,10 +29,10 @@ export class TodoService {
       params: httpParams,
     });
   }
-  filterTodos(todos: Todo[], filters: {category: string}): Todo[] {
+  filterTodos(todos: Todo[], filters: { owner?: string; category: string }): Todo[] {
     let filteredTodos = todos;
 
-    if(filters.category) {
+    if (filters.category) {
       filters.category = filters.category.toLocaleLowerCase();
       filteredTodos = filteredTodos.filter(todo => todo.category.toLocaleLowerCase().indexOf(filters.category) !== -1);
     }
