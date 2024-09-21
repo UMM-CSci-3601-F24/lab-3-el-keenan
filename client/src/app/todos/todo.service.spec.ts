@@ -61,43 +61,22 @@ describe('TodoService', () => {
     });
 
     describe('calling getTodos(0 with parameters correctly forms the HTTP Request', () => {
-      // it("correctly calls api/users with filter parameter 'age'", () => {
-      //   todoService.getTodos({ age: 25 }).subscribe(todos => expect(todos).toBe(testTodos));
-
-      //   // Specify that (exactly) one request will be made to the specified URL with the age parameter.
-      //   const req = httpTestingController.expectOne(
-      //     request => request.url.startsWith(userService.userUrl) && request.params.has('age')
-      //   );
-
-      //   // Check that the request made to that URL was a GET request.
-      //   expect(req.request.method).toEqual('GET');
-
-      //   // Check that the age parameter was '25'
-      //   expect(req.request.params.get('age')).toEqual('25');
-
-      //   req.flush(testUsers);
-      // });
-
       it('correctly calls api/todos with multiple filter parameters', () => {
-        todoService
-          .getTodos({ owner: 'Blanche', category: 'groceries', status: true })
-          .subscribe(todos => expect(todos).toBe(testTodos));
+        todoService.getTodos({ category: 'video', body: 'esse' }).subscribe(todos => expect(todos).toBe(testTodos));
 
         // Specify that (exactly) one request will be made to the specified URL with the role parameter.
         const req = httpTestingController.expectOne(
           request =>
-            request.url.startsWith(todoService.todoUrl) &&
-            request.params.has('owner') &&
-            request.params.has('category') &&
-            request.params.has('status')
+            request.url.startsWith(todoService.todoUrl) && request.params.has('body') && request.params.has('category')
+          // request.params.has('status')
         );
+
         // Check that the request made to that URL was a GET request.
         expect(req.request.method).toEqual('GET');
 
         // Check that the role, company, and age parameters are correct
-        // expect(req.request.params.get('owner')).toEqual('Blanche');
-        expect(req.request.params.get('category')).toEqual('groceries');
-        expect(req.request.params.get('status')).toEqual('true');
+        expect(req.request.params.get('category')).toEqual('video');
+        expect(req.request.params.get('body')).toEqual('esse');
 
         req.flush(testTodos);
       });
