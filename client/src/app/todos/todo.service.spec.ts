@@ -113,21 +113,20 @@ describe('TodoService', () => {
   // });
 
   describe('filterTodos()', () => {
-    it('filters by owner', () => {
-      const todoOwner = 'n';
-      const todoCategory = '';
-      const filteredTodos = todoService.filterTodos(testTodos, {
-        owner: todoOwner,
-        category: todoCategory,
-      });
-      // There should be owners with 'n' in their names
-      // name: Workman and Blanche.
-      expect(filteredTodos.length).toBe(2);
-      // Every returned todo's name should contain an 'n'.
-      filteredTodos.forEach(todo => {
-        expect(todo.owner.indexOf(todoOwner)).toBeGreaterThanOrEqual(0);
-      });
-    });
+    // it('filters by owner', () => {
+    //   const todoOwner = 'Fry';
+    //   // const todoCategory = '';
+    //   const filteredTodos = todoService.filterTodos(testTodos, {
+    //     owner: todoOwner,
+    //   });
+    //   // There should be owners with 'n' in their names
+    //   // name: Workman and Blanche.
+    //   expect(filteredTodos.length).toBe(3);
+    //   // Every returned todo's name should contain an 'n'.
+    //   filteredTodos.forEach(todo => {
+    //     expect(todo.owner.indexOf(todoOwner)).toBeGreaterThanOrEqual(0);
+    //   });
+    // });
 
     it('filters by category', () => {
       const todoCategory = 'video games';

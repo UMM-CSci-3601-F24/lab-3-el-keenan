@@ -29,7 +29,7 @@ export class TodoService {
       params: httpParams,
     });
   }
-  filterTodos(todos: Todo[], filters: { owner?: string; category: string }): Todo[] {
+  filterTodos(todos: Todo[], filters: { owner?: string; category?: string }): Todo[] {
     let filteredTodos = todos;
 
     if (filters.category) {
