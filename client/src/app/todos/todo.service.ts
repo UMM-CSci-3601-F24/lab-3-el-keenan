@@ -29,6 +29,10 @@ export class TodoService {
       params: httpParams,
     });
   }
+  // if want to implement view more uncoment
+  //   getTodoById(id: string): Observable<Todo> {
+  //     return this.httpClient.get<Todo>(this.todoUrl + '/' + id);
+  //   }
 
   filterTodos(todos: Todo[], filters: { body?: string; category?: string }): Todo[] {
     let filteredTodos = todos;
