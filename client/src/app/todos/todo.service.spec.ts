@@ -5,10 +5,6 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { Todo } from './todo';
 
 describe('TodoService', () => {
-  let todoService: TodoService;
-  let httpClient: HttpClient;
-  let httpTestingController: HttpTestingController;
-
   const testTodos: Todo[] = [
     {
       _id: '58895985a22c04e761776d54',
@@ -32,6 +28,9 @@ describe('TodoService', () => {
       category: 'software design',
     },
   ];
+  let todoService: TodoService;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     // Set up the mock handling of the HTTP requests
@@ -60,43 +59,38 @@ describe('TodoService', () => {
       req.flush(testTodos);
     });
 
-    describe('calling getTodos(0 with parameters correctly forms the HTTP Request', () => {
-      // it("correctly calls api/users with filter parameter 'age'", () => {
-      //   todoService.getTodos({ age: 25 }).subscribe(todos => expect(todos).toBe(testTodos));
+    it("correctly calls api/todos with filter parameter 'body'", () => {
+      todoService.getTodos({ body: 'esse' }).subscribe(todos => expect(todos).toBe(testTodos));
 
-      //   // Specify that (exactly) one request will be made to the specified URL with the age parameter.
-      //   const req = httpTestingController.expectOne(
-      //     request => request.url.startsWith(userService.userUrl) && request.params.has('age')
-      //   );
+      // Specify that (exactly) one request will be made to the specified URL with the age parameter.
+      const req = httpTestingController.expectOne(
+        request => request.url.startsWith(todoService.todoUrl) && request.params.has('body')
+      );
 
-      //   // Check that the request made to that URL was a GET request.
-      //   expect(req.request.method).toEqual('GET');
+      // Check that the request made to that URL was a GET request.
+      expect(req.request.method).toEqual('GET');
 
-      //   // Check that the age parameter was '25'
-      //   expect(req.request.params.get('age')).toEqual('25');
+      // Check that the age parameter was '25'
+      expect(req.request.params.get('body')).toEqual('esse');
 
-      //   req.flush(testUsers);
-      // });
+      req.flush(testTodos);
+    });
 
+    describe('calling getTodos() with parameters correctly forms the HTTP Request', () => {
       it('correctly calls api/todos with multiple filter parameters', () => {
-        todoService
-          .getTodos({ owner: 'Blanche', category: 'groceries', status: true })
-          .subscribe(todos => expect(todos).toBe(testTodos));
+        todoService.getTodos({ owner: 'Fry', status: true }).subscribe(todos => expect(todos).toBe(testTodos));
 
         // Specify that (exactly) one request will be made to the specified URL with the role parameter.
         const req = httpTestingController.expectOne(
           request =>
-            request.url.startsWith(todoService.todoUrl) &&
-            request.params.has('owner') &&
-            request.params.has('category') &&
-            request.params.has('status')
+            request.url.startsWith(todoService.todoUrl) && request.params.has('owner') && request.params.has('status')
         );
+
         // Check that the request made to that URL was a GET request.
         expect(req.request.method).toEqual('GET');
 
         // Check that the role, company, and age parameters are correct
-        // expect(req.request.params.get('owner')).toEqual('Blanche');
-        expect(req.request.params.get('category')).toEqual('groceries');
+        expect(req.request.params.get('owner')).toEqual('Fry');
         expect(req.request.params.get('status')).toEqual('true');
 
         req.flush(testTodos);
@@ -104,30 +98,36 @@ describe('TodoService', () => {
     });
   });
 
-  // TestBed.configureTestingModule({});
-  //   service = TestBed.inject(TodoService);
-  // });
+  //If want to implement to view more uncoment
+  /*
+  describe('getTodoByID()', () => {
+    it('calls api/todos/id with the correct ID', () => {
+      // We're just picking a User "at random" from our little
+      // set of Users up at the top.
+      const targetTodo: Todo = testTodos[1];
+      const targetId: string = targetTodo._id;
 
-  // it('should be created', () => {
-  //   expect(service).toBeTruthy();
-  // });
+      todoService.getTodoById(targetId).subscribe(
+        // This `expect` doesn't do a _whole_ lot.
+        // Since the `targetUser`
+        // is what the mock `HttpClient` returns in the
+        // `req.flush(targetUser)` line below, this
+        // really just confirms that `getUserById()`
+        // doesn't in some way modify the user it
+        // gets back from the server.
+        todo => expect(todo).toBe(targetTodo)
+      );
+
+      const expectedUrl: string = todoService.todoUrl + '/' + targetId;
+      const req = httpTestingController.expectOne(expectedUrl);
+      expect(req.request.method).toEqual('GET');
+
+      req.flush(targetTodo);
+    });
+  });
+  */
 
   describe('filterTodos()', () => {
-    // it('filters by owner', () => {
-    //   const todoOwner = 'Fry';
-    //   // const todoCategory = '';
-    //   const filteredTodos = todoService.filterTodos(testTodos, {
-    //     owner: todoOwner,
-    //   });
-    //   // There should be owners with 'n' in their names
-    //   // name: Workman and Blanche.
-    //   expect(filteredTodos.length).toBe(3);
-    //   // Every returned todo's name should contain an 'n'.
-    //   filteredTodos.forEach(todo => {
-    //     expect(todo.owner.indexOf(todoOwner)).toBeGreaterThanOrEqual(0);
-    //   });
-    // });
-
     it('filters by category', () => {
       const todoCategory = 'video games';
       const filteredTodos = todoService.filterTodos(testTodos, { category: todoCategory });
@@ -139,7 +139,7 @@ describe('TodoService', () => {
       });
     });
 
-    it('filters by name and company', () => {
+    it('filters by name and category', () => {
       // There's only one owner (Fry) whose owner
       // contains an 'y' and whose company contains
       // an 'v'. There are two whose owner contains
@@ -155,6 +155,18 @@ describe('TodoService', () => {
       filteredTodos.forEach(todo => {
         expect(todo.owner.indexOf(todoOwner)).toBeGreaterThanOrEqual(0);
         expect(todo.category.indexOf(todoCategory)).toBeGreaterThanOrEqual(0);
+      });
+    });
+
+    it('filters by body', () => {
+      const todoBody = 'esse';
+      const filters = { body: todoBody };
+      const filteredTodos = todoService.filterTodos(testTodos, filters);
+
+      expect(filteredTodos.length).toBe(2);
+
+      filteredTodos.forEach(todo => {
+        expect(todo.body.indexOf(todoBody)).toBeGreaterThanOrEqual(0);
       });
     });
   });

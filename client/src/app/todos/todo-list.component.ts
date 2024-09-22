@@ -78,7 +78,9 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.todoService
       .getTodos({
         status: this.todoStatus,
-        category: this.todoCategory,
+        // category: this.todoCategory,
+        owner: this.todoOwner,
+        body: this.todoBody,
       })
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
@@ -99,6 +101,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   public updateFilter() {
     this.filteredTodos = this.todoService.filterTodos(this.serverFilteredTodos, {
       category: this.todoCategory,
+      body: this.todoBody,
     });
   }
 
