@@ -138,6 +138,11 @@ describe('TodoService', () => {
         expect(todo.category.indexOf(todoCategory)).toBeGreaterThanOrEqual(0);
       });
     });
+    it('filters with limit',  () => {
+      const todoLimit=1;
+      const filteredTodos = todoService.filterTodos(testTodos, { limit: todoLimit});
+      expect(filteredTodos.length).toBe(todoLimit);
+    })
 
     it('filters by name and category', () => {
       // There's only one owner (Fry) whose owner

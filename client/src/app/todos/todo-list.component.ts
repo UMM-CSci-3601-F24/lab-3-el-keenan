@@ -63,6 +63,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   public todoCategory: string;
   public filterStatus: 'Complete' | 'Incomplete' = 'Complete';
   public viewType: 'card' | 'list' = 'card';
+  public todoLimit: number;
 
   errMsg = '';
   private ngUnsubscribe = new Subject<void>();
@@ -102,6 +103,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.filteredTodos = this.todoService.filterTodos(this.serverFilteredTodos, {
       category: this.todoCategory,
       body: this.todoBody,
+      limit: this.todoLimit,
     });
   }
 
