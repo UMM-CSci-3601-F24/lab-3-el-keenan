@@ -2,9 +2,9 @@
 @if(this.todo()) {
 <mat-card appearance="outlined" class="todo-card">
   <mat-card-header>
-    <mat-card-title> {{ this.todo().owner }}</mat-card-title>
-    <mat-card-subtitle> {{ this.todo().category }} </mat-card-subtitle>
-    <mat-card-content> {{ this.todo().body }} </mat-card-content>
+    <mat-card-title class="todo-card-owner"> {{ this.todo().owner }}</mat-card-title>
+    <mat-card-subtitle class="todo-card-category"> {{ this.todo().category }} </mat-card-subtitle>
+    <mat-card-content class="todo-card-age" > {{ this.todo().body }} </mat-card-content>
   </mat-card-header>
   @if (!this.simple()) {
   <mat-card-content>
