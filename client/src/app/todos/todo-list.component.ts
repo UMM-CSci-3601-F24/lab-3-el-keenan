@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Todo } from './todo';
 import { Subject, takeUntil } from 'rxjs';
@@ -53,15 +53,15 @@ import { TodoService } from './todo.service';
   ],
 })
 export class TodoListComponent implements OnInit, OnDestroy {
-  public serverFilteredTodos: Todo[];
-  public filteredTodos: Todo[];
+  public serverFilteredTodos: WritableSignal<Todo[]> = signal([]);
+  public filteredTodos: WritableSignal<Todo[]> = signal([]);
 
   public todoOwner: string;
   public todoID: number;
-  public todoStatus: boolean;
+  public todoStatus: boolean = undefined;
+  // public todoStatus: boolean;
   public todoBody: string;
   public todoCategory: string;
-  public filterStatus: 'Complete' | 'Incomplete' = 'Complete';
   public viewType: 'card' | 'list' = 'card';
   public todoLimit: number;
 
@@ -76,6 +76,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   // constructor(private todoService: TodoService, private snackBar: MatSnackBar) {}
 
   getTodosFromServer() {
+    console.log("In getTodosFromServer with status " + this.todoStatus);
     this.todoService
       .getTodos({
         status: this.todoStatus,
@@ -86,7 +87,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
         next: returnedTodos => {
-          this.serverFilteredTodos = returnedTodos;
+          this.serverFilteredTodos.set(returnedTodos);
           this.updateFilter();
         },
         error: err => {
@@ -100,11 +101,12 @@ export class TodoListComponent implements OnInit, OnDestroy {
   }
 
   public updateFilter() {
-    this.filteredTodos = this.todoService.filterTodos(this.serverFilteredTodos, {
+    this.filteredTodos.set(this.todoService.filterTodos(this.serverFilteredTodos(), {
       category: this.todoCategory,
       body: this.todoBody,
+      status: this.todoStatus,
       limit: this.todoLimit,
-    });
+    }));
   }
 
   ngOnInit(): void {

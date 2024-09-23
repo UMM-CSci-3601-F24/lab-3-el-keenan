@@ -59,6 +59,7 @@ describe('TodoService', () => {
       req.flush(testTodos);
     });
 
+
     it("correctly calls api/todos with filter parameter 'body'", () => {
       todoService.getTodos({ body: 'esse' }).subscribe(todos => expect(todos).toBe(testTodos));
 
