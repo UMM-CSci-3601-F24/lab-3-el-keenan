@@ -44,6 +44,19 @@ describe('Todo list', () => {
     });
   });
 
+  it('Should type something in the status and body filter and check that it returned correct elements', () => {
+    page.changeView('list');
+    cy.get('[data-test=viewTypeRadio]').get('mat-radio-button[value="list"]').click()
+    cy.get('[data-test=todoBodyInput]').type('esse');
+    cy.get('[data-test=todoStatusInput]').get('mat-radio-button[value="true"]').click();
+
+    // Go through each of the cards that are being shown and get the cards
+    page.getTodoListItems().each($list => {
+      cy.wrap($list).find('.todo-list-body').contains('Esse', {matchCase: false});
+      cy.wrap($list).find('.todo-list-status').should('include.text', 'complete');
+    });
+  });
+
   it('Should change the view', () => {
     // Choose the view type "List"
     page.changeView('list');
