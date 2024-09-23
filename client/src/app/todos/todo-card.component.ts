@@ -11,6 +11,7 @@ import {
 } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { Todo } from './todo';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-todo-card',
@@ -26,6 +27,7 @@ import { Todo } from './todo';
     MatCardContent,
     MatCardActions,
     MatButton,
+    MatIconModule,
     RouterLink,
   ],
 })

@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Todo } from './todo';
 import { Subject, takeUntil } from 'rxjs';
@@ -58,10 +58,10 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
   public todoOwner: string;
   public todoID: number;
-  public todoStatus: boolean;
+  public todoStatus: boolean = undefined;
+  // public todoStatus: boolean;
   public todoBody: string;
   public todoCategory: string;
-  public filterStatus: 'Complete' | 'Incomplete' = 'Complete';
   public viewType: 'card' | 'list' = 'card';
   public todoLimit: number;
 
@@ -76,6 +76,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   // constructor(private todoService: TodoService, private snackBar: MatSnackBar) {}
 
   getTodosFromServer() {
+    console.log("In getTodosFromServer with status " + this.todoStatus);
     this.todoService
       .getTodos({
         status: this.todoStatus,
@@ -103,6 +104,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.filteredTodos = this.todoService.filterTodos(this.serverFilteredTodos, {
       category: this.todoCategory,
       body: this.todoBody,
+      status: this.todoStatus,
       limit: this.todoLimit,
     });
   }

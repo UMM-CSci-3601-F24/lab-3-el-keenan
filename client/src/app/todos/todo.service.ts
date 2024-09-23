@@ -28,19 +28,25 @@ export class TodoService {
         httpParams = httpParams.set('body', filters.body);
       }
       if (filters.status != undefined) {
-        httpParams = httpParams.set('status', filters.status.toString());
+        if (filters.status) {
+          httpParams = httpParams.set('status', 'complete');
+        } else {
+          httpParams = httpParams.set('status', 'incomplete');
+        }
       }
     }
+    console.log(filters);
+    console.log(httpParams);
     return this.httpClient.get<Todo[]>(this.todoUrl, {
       params: httpParams,
     });
   }
-  // if want to implement view more uncoment
+  // if want to implement view more uncomment
   //   getTodoById(id: string): Observable<Todo> {
   //     return this.httpClient.get<Todo>(this.todoUrl + '/' + id);
   //   }
 
-  filterTodos(todos: Todo[], filters: { body?: string; category?: string; limit?: number }): Todo[] {
+  filterTodos(todos: Todo[], filters: { body?: string; category?: string; limit?: number ; status?: boolean}): Todo[] {
     let filteredTodos = todos;
 
     if (filters.category) {

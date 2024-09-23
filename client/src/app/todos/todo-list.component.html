@@ -5,20 +5,6 @@
       <mat-card-title class="todos-list-title">Todos</mat-card-title>
       <mat-card-content class="flex-col">
         <div class="flex-row gap-10 flex-wrap">
-          <!-- Examples of filtering in Angular -->
-
-          <!-- <mat-form-field class="input-field">
-            <mat-label>Owner</mat-label>
-            <input
-              matInput
-              data-test="todoOwnerInput"
-              placeholder="Filter by owner"
-              [(ngModel)]="todoOwner"
-              (input)="updateFilter()"
-            />
-            <mat-hint>Filtered on client</mat-hint>
-          </mat-form-field> -->
-
           <mat-form-field class="input-field">
             <mat-label>Owner</mat-label>
             <input
@@ -32,30 +18,18 @@
             <mat-hint>Filtered on server</mat-hint>
           </mat-form-field>
 
-          <!-- want to make into dropdown if possibe-->
           <mat-form-field class="input-field">
             <mat-label>Category</mat-label>
-            <input
-              matInput
-              data-test="todoCategoryInput"
-              placeholder="Filter by category"
-              [(ngModel)]="todoCategory"
-              (input)="updateFilter()"
-            />
+            <mat-select (selectionChange)="updateFilter()" [(ngModel)]="todoCategory" data-test="todoCategoryInput">
+              <mat-option class="mat-option">--</mat-option>
+              <mat-option class="mat-option" value="video games">video games</mat-option>
+              <mat-option class="mat-option" value="software design">software design</mat-option>
+              <mat-option class="mat-option" value="homework">homework</mat-option>
+              <mat-option class="mat-option" value="groceries">groceries</mat-option>
+            </mat-select>
             <mat-hint>Filtered on client</mat-hint>
           </mat-form-field>
 
-          <!-- <mat-form-field class="input-field">
-            <mat-label>Category</mat-label>
-            <mat-select (input)="updateFilter()" [(ngModel)]="todoCategory" data-test="todoCategoryInput">
-              <mat-option>--</mat-option>
-              <mat-option value="video games">video games</mat-option>
-              <mat-option value="software design">software design</mat-option>
-              <mat-option value="homework">homework</mat-option>
-              <mat-option value="groceries">groceries</mat-option>
-            </mat-select>
-            <mat-hint>Filtered on server/client?</mat-hint>
-          </mat-form-field> -->
           <div class="flex-row gap-10 flex-wrap">
             <mat-form-field class="input-field">
               <mat-label>Body</mat-label>
@@ -68,32 +42,13 @@
               />
               <mat-hint>Filtered on client</mat-hint>
             </mat-form-field>
-          </div>
-          <div class="flex-row gap-10 flex-wrap">
-            <!-- <label for="filterStatus">Filter by status</label>
-            <mat-radio-group aria-label="filterStatus" [(ngModel)]="filterStatus" data-test="filterStatusRadio">
-              <mat-radio-button value="true">Complete</mat-radio-button>
-              <mat-radio-button checked value="false">Incomplete</mat-radio-button>
-            </mat-radio-group> -->
-            <mat-form-field class="input-field">
-              <mat-label>Status</mat-label>
-              <input
-                matInput
-                data-test="todoStatusInput"
-                type="boolean"
-                placeholder="Filter by Status: Complete or Incomplete"
-                [(ngModel)]="todoStatus"
-                (input)="getTodosFromServer()"
-              />
-              <mat-hint>Filtered on server</mat-hint>
-            </mat-form-field>
-          </div>
-          <div class="flex-row gap-10 flex-wrap">
+
             <mat-form-field class="input-field">
               <mat-label>Limit</mat-label>
               <input
                 matInput
                 data-test="todoLimitInput"
+                type="number"
                 min="0"
                 placeholder="Limit number of Todos"
                 [(ngModel)]="todoLimit"
@@ -104,6 +59,18 @@
           </div>
 
           <div class="flex-row gap-10 flex-wrap">
+            <label for="todoStatus">Status </label>
+            <mat-radio-group
+              aria-label="Todo status"
+              (change)="getTodosFromServer()"
+              [(ngModel)]="todoStatus"
+              data-test="todoStatusInput"
+            >
+              <mat-radio-button [value]="undefined">Both</mat-radio-button>
+              <mat-radio-button [value]="true">Complete</mat-radio-button>
+              <mat-radio-button [value]="false">Incomplete</mat-radio-button>
+            </mat-radio-group>
+
             <label for="viewType">View type: </label>
             <mat-radio-group aria-label="View type" [(ngModel)]="viewType" data-test="viewTypeRadio">
               <mat-radio-button value="card">Card</mat-radio-button>
@@ -138,8 +105,12 @@
             <h3 mat-subheader>Todos</h3>
             @for (todo of this.filteredTodos; track todo._id) {
             <a mat-list-item [routerLink]="['/todos', todo._id]" class="todo-list-item">
-              <span matListItemTitle mat-line class="todo-list-owner"> {{ todo.owner }} </span>
-              <span matListItemLine class="todo-list-category"> {{ todo.category }} </span>
+              <span matListItemTitle class="todo-list-owner"> {{ todo.owner }} </span>
+              <span matListItemLine mat-line class="todo-list-category"> {{ todo.category }} </span>
+              @if(todo.status) {
+              <span matListItemLine mat-line class="todo-list-status"> true/complete</span>
+              } @else {<span matListItemLine class="todo-list-status"> false/incomplete</span> }
+              <span matListItemLine mat-line class="todo-list-body">{{ todo.body }}</span>
             </a>
             }
           </mat-nav-list>

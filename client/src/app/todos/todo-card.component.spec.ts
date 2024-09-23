@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TodoCardComponent } from './todo-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 import { Todo } from './todo';
 
@@ -12,7 +13,7 @@ describe('UserCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, MatCardModule, TodoCardComponent],
+      imports: [BrowserAnimationsModule, MatCardModule, TodoCardComponent, MatIconModule],
     }).compileComponents();
   }));
 

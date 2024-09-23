@@ -4,7 +4,10 @@
   <mat-card-header>
     <mat-card-title class="todo-card-owner"> {{ this.todo().owner }}</mat-card-title>
     <mat-card-subtitle class="todo-card-category"> {{ this.todo().category }} </mat-card-subtitle>
-    <mat-card-content class="todo-card-age" > {{ this.todo().body }} </mat-card-content>
+    @if(this.todo().status) {
+      <mat-icon aria-hidden="true/complete" matListIcon>check_circle</mat-icon>
+    } @else {<mat-icon aria-hidden="false/incomplete" matListIcon>check_circle_outline</mat-icon>}
+    <mat-card-content class="todo-card-body"> {{ this.todo().body }} </mat-card-content>
   </mat-card-header>
   @if (!this.simple()) {
   <mat-card-content>
@@ -12,7 +15,7 @@
       Category: <span class="todo-card-category">{{ this.todo().category }}</span>
     </p>
     <p>
-      Status: <span class="todo-card-age">{{ this.todo().status }}</span>
+      Status: <span class="todo-card-status">{{ this.todo().status}}</span>
     </p>
     <p>
       {{ this.todo().body }}
@@ -20,7 +23,8 @@
   </mat-card-content>
   }
 
-  <!-- @if (this.simple()) {
+  <!-- requires searching by id
+  @if (this.simple()) {
   <mat-card-actions>
     <button mat-button data-test="viewProfileButton" [routerLink]="['/todos', this.todo()._id]">View More</button>
   </mat-card-actions>
