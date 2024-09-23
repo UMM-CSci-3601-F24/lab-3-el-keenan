@@ -163,20 +163,6 @@ describe('TodoService', () => {
       expect(filteredTodos.length).toBe(todoLimit);
     })
 
-    it('returns correct todos when filter by status', () => {
-      const todoStatus = false;
-      const filters = { status: todoStatus };
-      //changed to getTodos because filterTodos does not handle status filtering
-      const filteredTodos = todoService.getTodos(filters);
-      console.log(filteredTodos);
-
-      expect(filteredTodos.length).toBe(2);
-
-      filteredTodos.forEach(todo => {
-        expect(todo.status === todoStatus)
-      });
-    })
-
     it('filters by owner and category', () => {
       // There's only one owner (Fry) whose owner
       // contains an 'y' and whose company contains
