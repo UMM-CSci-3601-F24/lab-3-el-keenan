@@ -144,7 +144,7 @@ describe('TodoService', () => {
       expect(filteredTodos.length).toBe(todoLimit);
     })
 
-    it('filters by name and category', () => {
+    it('filters by owner and category', () => {
       // There's only one owner (Fry) whose owner
       // contains an 'y' and whose company contains
       // an 'v'. There are two whose owner contains
@@ -162,6 +162,7 @@ describe('TodoService', () => {
         expect(todo.category.indexOf(todoCategory)).toBeGreaterThanOrEqual(0);
       });
     });
+
 
     it('filters by body', () => {
       const todoBody = 'esse';
