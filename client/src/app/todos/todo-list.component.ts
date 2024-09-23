@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Todo } from './todo';
 import { Subject, takeUntil } from 'rxjs';
@@ -53,8 +53,8 @@ import { TodoService } from './todo.service';
   ],
 })
 export class TodoListComponent implements OnInit, OnDestroy {
-  public serverFilteredTodos: WritableSignal<Todo[]> = signal([]);
-  public filteredTodos: WritableSignal<Todo[]> = signal([]);
+  public serverFilteredTodos: Todo[];
+  public filteredTodos: Todo[];
 
   public todoOwner: string;
   public todoID: number;
@@ -87,7 +87,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
         next: returnedTodos => {
-          this.serverFilteredTodos.set(returnedTodos);
+          this.serverFilteredTodos = returnedTodos;
           this.updateFilter();
         },
         error: err => {
@@ -101,12 +101,12 @@ export class TodoListComponent implements OnInit, OnDestroy {
   }
 
   public updateFilter() {
-    this.filteredTodos.set(this.todoService.filterTodos(this.serverFilteredTodos(), {
+    this.filteredTodos = this.todoService.filterTodos(this.serverFilteredTodos, {
       category: this.todoCategory,
       body: this.todoBody,
       status: this.todoStatus,
       limit: this.todoLimit,
-    }));
+    });
   }
 
   ngOnInit(): void {

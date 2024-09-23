@@ -59,6 +59,23 @@ describe('TodoService', () => {
       req.flush(testTodos);
     });
 
+    it('creates one correct http request with filter parameter status', () => {
+      todoService.getTodos({ status: true }).subscribe(todos => expect(todos).toBe(testTodos));
+
+      // Specify that (exactly) one request will be made to the specified URL with the age parameter.
+      const req = httpTestingController.expectOne(
+        request => request.url.startsWith(todoService.todoUrl) && request.params.has('status')
+      );
+
+      // Check that the request made to that URL was a GET request.
+      expect(req.request.method).toEqual('GET');
+
+      // Check that the age parameter was 'true'
+      expect(req.request.params.get('status')).toEqual('complete');
+
+      req.flush(testTodos);
+    })
+
 
     it("correctly calls api/todos with filter parameter 'body'", () => {
       todoService.getTodos({ body: 'esse' }).subscribe(todos => expect(todos).toBe(testTodos));
@@ -92,7 +109,7 @@ describe('TodoService', () => {
 
         // Check that the role, company, and age parameters are correct
         expect(req.request.params.get('owner')).toEqual('Fry');
-        expect(req.request.params.get('status')).toEqual('true');
+        expect(req.request.params.get('status')).toEqual('complete');
 
         req.flush(testTodos);
       });
@@ -139,10 +156,25 @@ describe('TodoService', () => {
         expect(todo.category.indexOf(todoCategory)).toBeGreaterThanOrEqual(0);
       });
     });
+
     it('filters with limit',  () => {
       const todoLimit=1;
       const filteredTodos = todoService.filterTodos(testTodos, { limit: todoLimit});
       expect(filteredTodos.length).toBe(todoLimit);
+    })
+
+    it('returns correct todos when filter by status', () => {
+      const todoStatus = false;
+      const filters = { status: todoStatus };
+      //changed to getTodos because filterTodos does not handle status filtering
+      const filteredTodos = todoService.getTodos(filters);
+      console.log(filteredTodos);
+
+      expect(filteredTodos.length).toBe(2);
+
+      filteredTodos.forEach(todo => {
+        expect(todo.status === todoStatus)
+      });
     })
 
     it('filters by owner and category', () => {
