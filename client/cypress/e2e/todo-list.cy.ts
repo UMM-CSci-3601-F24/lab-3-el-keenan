@@ -23,41 +23,25 @@ describe('Todo list', () => {
   });
 
   it('Should enter category in input box and check for correct return', () => {
-    cy.get('[data-test=todoCategoryInput]').type('video games');
+    cy.get('[data-test=todoCategoryInput]').click();
+    cy.get('mat-option').contains('video games').click();
     page.getTodoCards().each($card => {
       cy.wrap($card).find('.todo-card-category').should('include.text', 'video games');
-    });
-    // broken bc expects equals not contains
-    // page
-    //   .getTodoCards()
-    //   .find('.todo-card-category')
-    //   .each($category => expect($category.text()).to.equal('video games'));
-  });
-
-  it('Should type something partial in the category filter and check that it returned correct elements', () => {
-     // Filter for todos with category 'vid'
-    cy.get('[data-test=todoCategoryInput]').type('vid');
-
-    page.getTodoCards().each(e => {
-      cy.wrap(e).find('.todo-card-category').should('include.text', 'vid');
     });
   });
 
   it('Should type something in the limit and category filter and check that it returned correct elements', () => {
     // Filter for limit of '3'
     cy.get('[data-test=todoLimitInput]').type('3');
-    cy.get('[data-test=todoCategoryInput]').type('video games');
+    cy.get('[data-test=todoCategoryInput]').click();
+    cy.get('mat-option').contains('video games').click();
     page.getTodoCards().should('have.lengthOf', 3);
 
     // Go through each of the cards that are being shown and get the cards
-    page
-      .getTodoCards()
-      .find('.todo-card-category')
-      // We should see these todos whose category is video games
-      .should('contain.text', 'video games')
-      // We shouldn't see these todos
-      .should('not.contain.text', 'software design')
-      .should('not.contain.text', 'groceries');
+    page.getTodoCards().each($card => {
+      cy.wrap($card).find('.todo-card-category').should('include.text', 'video games');
+      cy.wrap($card).find('.todo-card-category').should('not.contain.text', 'software');
+    });
   });
 
   it('Should change the view', () => {
@@ -77,7 +61,4 @@ describe('Todo list', () => {
     page.getTodoCards().should('exist');
     page.getTodoListItems().should('not.exist');
   });
-
-
-
 });

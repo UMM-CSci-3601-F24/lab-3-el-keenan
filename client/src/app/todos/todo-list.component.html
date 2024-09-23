@@ -5,7 +5,6 @@
       <mat-card-title class="todos-list-title">Todos</mat-card-title>
       <mat-card-content class="flex-col">
         <div class="flex-row gap-10 flex-wrap">
-
           <mat-form-field class="input-field">
             <mat-label>Owner</mat-label>
             <input
@@ -22,11 +21,11 @@
           <mat-form-field class="input-field">
             <mat-label>Category</mat-label>
             <mat-select (selectionChange)="updateFilter()" [(ngModel)]="todoCategory" data-test="todoCategoryInput">
-              <mat-option>--</mat-option>
-              <mat-option value="video games">video games</mat-option>
-              <mat-option value="software design">software design</mat-option>
-              <mat-option value="homework">homework</mat-option>
-              <mat-option value="groceries">groceries</mat-option>
+              <mat-option class="mat-option">--</mat-option>
+              <mat-option class="mat-option" value="video games">video games</mat-option>
+              <mat-option class="mat-option" value="software design">software design</mat-option>
+              <mat-option class="mat-option" value="homework">homework</mat-option>
+              <mat-option class="mat-option" value="groceries">groceries</mat-option>
             </mat-select>
             <mat-hint>Filtered on client</mat-hint>
           </mat-form-field>
@@ -61,10 +60,15 @@
 
           <div class="flex-row gap-10 flex-wrap">
             <label for="todoStatus">Status </label>
-            <mat-radio-group aria-label="Todo status" (change)="getTodosFromServer()" [(ngModel)]="todoStatus" data-test="todoStatusInput">
-              <mat-radio-button [value]=undefined>Both</mat-radio-button>
-              <mat-radio-button [value]=true>Complete</mat-radio-button>
-              <mat-radio-button [value]=false>Incomplete</mat-radio-button>
+            <mat-radio-group
+              aria-label="Todo status"
+              (change)="getTodosFromServer()"
+              [(ngModel)]="todoStatus"
+              data-test="todoStatusInput"
+            >
+              <mat-radio-button [value]="undefined">Both</mat-radio-button>
+              <mat-radio-button [value]="true">Complete</mat-radio-button>
+              <mat-radio-button [value]="false">Incomplete</mat-radio-button>
             </mat-radio-group>
 
             <label for="viewType">View type: </label>
@@ -104,9 +108,9 @@
               <span matListItemTitle class="todo-list-owner"> {{ todo.owner }} </span>
               <span matListItemLine mat-line class="todo-list-category"> {{ todo.category }} </span>
               @if(todo.status) {
-                <span matListItemLine mat-line class="todo-list-status"> true/complete</span>
+              <span matListItemLine mat-line class="todo-list-status"> true/complete</span>
               } @else {<span matListItemLine class="todo-list-status"> false/incomplete</span> }
-              <span matListItemLine mat-line class="todo-list-body">{{todo.body}}</span>
+              <span matListItemLine mat-line class="todo-list-body">{{ todo.body }}</span>
             </a>
             }
           </mat-nav-list>
