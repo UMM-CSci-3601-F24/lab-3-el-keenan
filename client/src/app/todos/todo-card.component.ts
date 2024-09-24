@@ -1,6 +1,5 @@
 import { Component, input } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import {
   MatCard,
   MatCardActions,
@@ -11,12 +10,13 @@ import {
   MatCardTitle,
 } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
-import { User } from './user';
+import { Todo } from './todo';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-user-card',
-  templateUrl: './user-card.component.html',
-  styleUrls: ['./user-card.component.scss'],
+  selector: 'app-todo-card',
+  templateUrl: './todo-card.component.html',
+  styleUrls: ['./todo-card.component.scss'],
   standalone: true,
   imports: [
     MatCard,
@@ -31,7 +31,7 @@ import { User } from './user';
     RouterLink,
   ],
 })
-export class UserCardComponent {
-  user = input.required<User>();
+export class TodoCardComponent {
+  todo = input.required<Todo>();
   simple = input(false);
 }
